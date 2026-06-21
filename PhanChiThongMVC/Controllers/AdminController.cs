@@ -61,7 +61,10 @@ namespace PhanChiThongMVC.Controllers
             if (!IsAdmin()) return RedirectToAction("Login", "Account");
             var articles = _newsArticleService.GetAll();
             if (startDate.HasValue) articles = articles.Where(a => a.CreatedDate >= startDate.Value).ToList();
-            if (endDate.HasValue) articles = articles.Where(a => a.CreatedDate <= endDate.Value).ToList();
+            if (endDate.HasValue) {
+                var nextDay = endDate.Value.AddDays(1);
+                articles = articles.Where(a => a.CreatedDate < nextDay).ToList();
+            }
             articles = articles.OrderByDescending(a => a.CreatedDate).ToList();
             ViewBag.StartDate = startDate?.ToString("yyyy-MM-dd");
             ViewBag.EndDate = endDate?.ToString("yyyy-MM-dd");
@@ -74,7 +77,10 @@ namespace PhanChiThongMVC.Controllers
 
             var articles = _newsArticleService.GetAll();
             if (startDate.HasValue) articles = articles.Where(a => a.CreatedDate >= startDate.Value).ToList();
-            if (endDate.HasValue) articles = articles.Where(a => a.CreatedDate <= endDate.Value).ToList();
+            if (endDate.HasValue) {
+                var nextDay = endDate.Value.AddDays(1);
+                articles = articles.Where(a => a.CreatedDate < nextDay).ToList();
+            }
             articles = articles.OrderByDescending(a => a.CreatedDate).ToList();
 
             var builder = new System.Text.StringBuilder();
